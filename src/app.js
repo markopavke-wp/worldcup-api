@@ -8,6 +8,7 @@ import predictionsRoutes from './routes/predictions.js';
 import leaderboardRoutes from './routes/leaderboard.js';
 import standingsRoutes from './routes/standings.js';
 import adminRoutes from './routes/admin.js';
+import usersRoutes from './routes/users.js';
 
 export function createApp() {
   const app = express();
@@ -25,6 +26,7 @@ export function createApp() {
   app.use('/api/leaderboard', leaderboardRoutes);
   app.use('/api/standings', standingsRoutes);
   app.use('/api/admin', adminRoutes);
+  app.use('/api/users', usersRoutes);
 
   app.use(errorHandler);
   return app;

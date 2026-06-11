@@ -32,30 +32,6 @@ const predictionSchema = z
     }
   });
 
-router.get('/user/:userId', authRequired, async (req, res, next) => {
-  try {
-    const user = await prisma.user.findUnique({
-      where: { id: req.params.userId },
-      select: { id: true, displayName: true },
-    });
-
-    if (!user) return res.status(404).json({ error: 'Igrač nije pronađen' });
-
-    const predictions = await prisma.prediction.findMany({
-      where: {
-        userId: user.id,
-        match: { status: 'FINISHED' },
-      },
-      include: { match: true },
-      orderBy: { match: { kickoffAt: 'desc' } },
-    });
-
-    res.json({ user, predictions });
-  } catch (err) {
-    next(err);
-  }
-});
-
 router.get('/me', authRequired, async (req, res, next) => {
   try {
     const predictions = await prisma.prediction.findMany({
