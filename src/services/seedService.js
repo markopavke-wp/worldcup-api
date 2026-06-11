@@ -2,7 +2,7 @@ import { prisma } from '../lib/prisma.js';
 import { config } from '../config.js';
 import { getLockTime } from '../lib/outcome.js';
 import { FIXTURE_ROWS } from '../../prisma/data/fixtures2026.js';
-import { syncFixtures } from './syncService.js';
+import { syncFixturesFromApiFootball, syncFixturesFromFootballData } from './syncService.js';
 import { getTeamInfo } from '../lib/teams.js';
 
 const MONTHS = {
@@ -93,11 +93,21 @@ export async function ensureMatchesSeeded() {
     return { skipped: true, count };
   }
 
-  if (config.football.apiKey) {
-    const result = await syncFixtures();
-    return { source: 'api', ...result };
+  if (config.football.apiKey && !config.footballData.token) {
+    const result = await syncFixturesFromApiFootball();
+    return { source: result.source, ...result };
   }
 
-  const result = await seedFixtures();
-  return { source: 'seed', ...result };
+  const seedResult = await seedFixtures();
+
+  if (config.footballData.token) {
+    try {
+      const syncResult = await syncFixturesFromFootballData();
+      return { source: 'football-data', seeded: seedResult.upserted, ...syncResult };
+    } catch (error) {
+      console.warn('football-data sync nakon seed-a:', error.message);
+    }
+  }
+
+  return { source: 'seed', ...seedResult };
 }

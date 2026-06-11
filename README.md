@@ -2,24 +2,26 @@
 
 Backend za aplikaciju prognoza FIFA Svetskog prvenstva 2026.
 
-## Podaci — API-Football
+## Podaci — football-data.org (preporučeno)
 
-Koristi [API-Football](https://www.api-football.com/) (`league=1`, `season=2026`):
+Koristi [football-data.org](https://www.football-data.org/) (`competition=WC`, `season=2026`):
 
-- raspored svih 104 utakmica
-- live rezultati i status
-- tabele svih 12 grupa
+- live rezultati i status utakmica
+- tabele grupa
+- besplatan plan: **10 zahteva/min**
 
-Besplatan plan: **100 zahteva/dan** — dovoljno za sync svakih 15–30 min.
+1. Registruj se: https://www.football-data.org/client/register
+2. Kopiraj token u `.env` kao `FOOTBALL_DATA_TOKEN`
 
-1. Registruj se: https://dashboard.api-football.com/register
-2. Kopiraj API ključ u `.env`
+Raspored (104 utakmice) dolazi iz seed-a; sync ažurira rezultate i status u odnosu na timove i datum.
+
+Opciono: [API-Football](https://www.api-football.com/) — besplatan plan **ne** podržava sezonu 2026.
 
 ## Pokretanje lokalno
 
 ```bash
 cp .env.example .env
-# popuni DATABASE_URL i API_FOOTBALL_KEY
+# popuni DATABASE_URL i FOOTBALL_DATA_TOKEN
 
 npm install
 docker compose up -d
@@ -45,7 +47,7 @@ npm run sync
    - Web servis sa migracijama i seed-om (104 utakmice)
 4. Ručno dodaj u dashboardu:
    - `CORS_ORIGIN` = URL frontenda (npr. `https://worldcup-web.onrender.com`)
-   - `API_FOOTBALL_KEY` = opciono, za live rezultate i tabele grupa
+   - `FOOTBALL_DATA_TOKEN` = za live rezultate i tabele grupa
 5. Frontend (`worldcup-web`) deployuj posebno; u `VITE_API_URL` stavi URL API-ja
 
 ## Endpointi

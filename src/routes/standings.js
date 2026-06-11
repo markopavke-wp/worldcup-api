@@ -10,7 +10,7 @@ router.get('/', authRequired, async (req, res, next) => {
   try {
     let standings = [];
 
-    if (config.football.apiKey) {
+    if (config.footballData.token || config.football.apiKey) {
       standings = await getCachedStandings();
     }
 

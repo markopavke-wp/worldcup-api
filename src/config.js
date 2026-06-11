@@ -20,6 +20,12 @@ export const config = {
     leagueId: Number(process.env.API_FOOTBALL_LEAGUE_ID) || 1,
     season: Number(process.env.API_FOOTBALL_SEASON) || 2026,
   },
+  footballData: {
+    baseUrl: 'https://api.football-data.org/v4',
+    token: process.env.FOOTBALL_DATA_TOKEN || '',
+    competition: process.env.FOOTBALL_DATA_COMPETITION || 'WC',
+    season: Number(process.env.FOOTBALL_DATA_SEASON) || 2026,
+  },
   cron: {
     enabled: process.env.ENABLE_CRON === 'true',
     schedule: process.env.SYNC_CRON || '*/15 * * * *',

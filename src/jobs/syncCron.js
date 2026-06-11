@@ -8,8 +8,8 @@ export function startSyncCron() {
     return;
   }
 
-  if (!config.football.apiKey) {
-    console.log('Cron sync preskočen — API_FOOTBALL_KEY nije podešen');
+  if (!config.footballData.token && !config.football.apiKey) {
+    console.log('Cron sync preskočen — podesi FOOTBALL_DATA_TOKEN ili API_FOOTBALL_KEY');
     return;
   }
 
