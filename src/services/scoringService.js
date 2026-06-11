@@ -59,8 +59,8 @@ export async function getLeaderboard() {
       );
 
       const totalPoints = finished.reduce((sum, p) => sum + p.pointsAwarded, 0);
-      const exactHits = finished.filter((p) => p.pointsAwarded >= 2).length;
-      const outcomeHits = finished.filter((p) => p.pointsAwarded === 1 || p.pointsAwarded === 3).length;
+      const exactHits = finished.filter((p) => p.pointsAwarded === 3).length;
+      const outcomeHits = finished.filter((p) => p.pointsAwarded >= 1).length;
       const predictionsCount = user.predictions.length;
 
       return {
