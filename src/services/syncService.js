@@ -220,10 +220,10 @@ export async function getFootballDataStandings() {
     const standings = await fetchFootballDataStandings();
     if (!standings.length) return [];
 
-    return standings
-      .filter((entry) => entry.type === 'TOTAL' || !entry.type)
+    const mapped = standings
+      .filter((entry) => (entry.type === 'TOTAL' || !entry.type) && entry.group)
       .map((entry) => ({
-        group: mapGroupName(entry.group) || 'Unknown',
+        group: mapGroupName(entry.group),
         teams: (entry.table || []).map((row) => ({
           rank: row.position,
           team: normalizeTeamName(row.team.name),
@@ -238,7 +238,11 @@ export async function getFootballDataStandings() {
           points: row.points,
           form: row.form || '',
         })),
-      }));
+      }))
+      .filter((entry) => entry.group);
+
+    // Pre početka turnira API često vraća jednu tabelu od 48 timova bez grupa — tada fallback na bazu
+    return mapped.length >= 12 ? mapped : [];
   } catch (error) {
     console.error('football-data standings failed:', error.message);
     return [];
