@@ -25,9 +25,11 @@ export function calculatePoints(outcomePred, homePred, awayPred, actualHome, act
   return points;
 }
 
-export function getLockTime(kickoffAt) {
+export function getLockTime(kickoffAt, stage) {
   const lock = new Date(kickoffAt);
-  lock.setHours(lock.getHours() - 1);
+  // Finale: tipovanje do 15 min pre početka; ostalo do 1h
+  const minutesBefore = stage === 'Final' ? 15 : 60;
+  lock.setMinutes(lock.getMinutes() - minutesBefore);
   return lock;
 }
 

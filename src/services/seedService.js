@@ -68,7 +68,7 @@ export async function seedFixtures() {
         homeTeamLogo,
         awayTeamLogo,
         status: 'SCHEDULED',
-        predictionsLockedAt: getLockTime(fixture.kickoffAt),
+        predictionsLockedAt: getLockTime(fixture.kickoffAt, fixture.stage),
       },
       update: {
         homeTeam: fixture.homeTeam,
@@ -78,7 +78,7 @@ export async function seedFixtures() {
         kickoffAt: fixture.kickoffAt,
         stage: fixture.stage,
         groupName: fixture.groupName,
-        predictionsLockedAt: getLockTime(fixture.kickoffAt),
+        predictionsLockedAt: getLockTime(fixture.kickoffAt, fixture.stage),
       },
     });
     upserted += 1;

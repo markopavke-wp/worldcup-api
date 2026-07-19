@@ -82,7 +82,7 @@ export async function syncFixturesFromApiFootball() {
         homeScore: status === 'FINISHED' ? homeScore : null,
         awayScore: status === 'FINISHED' ? awayScore : null,
         status,
-        predictionsLockedAt: getLockTime(kickoffAt),
+        predictionsLockedAt: getLockTime(kickoffAt, league.round || 'Group Stage'),
       },
       update: {
         homeTeam: teams.home.name,
@@ -95,7 +95,7 @@ export async function syncFixturesFromApiFootball() {
         homeScore,
         awayScore,
         status,
-        predictionsLockedAt: getLockTime(kickoffAt),
+        predictionsLockedAt: getLockTime(kickoffAt, league.round || 'Group Stage'),
       },
     });
 
@@ -138,6 +138,7 @@ export async function syncFixturesFromFootballData() {
     const homeScore = apiMatch.score?.fullTime?.home ?? null;
     const awayScore = apiMatch.score?.fullTime?.away ?? null;
     const groupName = mapGroupName(apiMatch.group);
+    const stage = mapFootballDataStage(apiMatch.stage, apiMatch.group);
     const homeTeam = apiMatch.homeTeam?.name
       ? normalizeTeamName(apiMatch.homeTeam.name)
       : dbMatch.homeTeam;
@@ -153,12 +154,12 @@ export async function syncFixturesFromFootballData() {
         homeTeamLogo: apiMatch.homeTeam?.crest || getTeamInfo(homeTeam).flagUrl || dbMatch.homeTeamLogo,
         awayTeamLogo: apiMatch.awayTeam?.crest || getTeamInfo(awayTeam).flagUrl || dbMatch.awayTeamLogo,
         kickoffAt,
-        stage: mapFootballDataStage(apiMatch.stage, apiMatch.group),
+        stage,
         groupName,
         homeScore,
         awayScore,
         status,
-        predictionsLockedAt: getLockTime(kickoffAt),
+        predictionsLockedAt: getLockTime(kickoffAt, stage),
       },
     });
 
